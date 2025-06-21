@@ -3,11 +3,6 @@ import './login.css';
 import { Link } from 'react-router-dom';
 import './login.css';
 
-
-
-
-
-
 function Login() {
     
 const [logininfo,setlogininfo]=useState({
