@@ -33,8 +33,9 @@ const handleLogin = async (e) => {
       const data = await res.json();
 
       if (res.ok) {
-        alert(data.message || 'Login successful!');
         setlogininfo({ email: "", password: "" });
+        alert(data.message || 'Login successful!');
+       
         navigate('/'); // Or whatever route you want to go to
       } else {
         alert(data.message || 'Login failed');
