@@ -31,17 +31,18 @@ const handleLogin = async (e) => {
       });
 
       const data = await res.json();
-
+    
       if (res.ok) {
-        setlogininfo({ email: "", password: "" });
+    
         alert(data.message || 'Login successful!');
-       
+        setlogininfo({ email: "", password: "" });
+
         navigate('/'); // Or whatever route you want to go to
       } else {
         alert(data.message || 'Login failed');
       }
 
-      setlogininfo({ email: "", password: "" }); // no name needed here
+     // no name needed here
     } catch (err) {
       console.error(err);
       alert('Something went wrong. Please try again.');
