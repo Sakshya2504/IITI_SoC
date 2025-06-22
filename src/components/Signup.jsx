@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import './Signup.css';
 
+
 function Signup() {
+
+  const navigate = useNavigate();
   const [logininfo, setlogininfo] = useState({
     name: '',
     email: '',
@@ -25,6 +28,11 @@ function Signup() {
       const data = await res.json();
       alert(data.message || 'Signup successful!');
       setlogininfo({ name: "", email: "", password: "" });
+      if (res.ok) {
+        navigate('/'); // Redirect to login page after successful signup
+      } else {
+        alert(data.message || 'Signup failed');
+      }
     } catch (err) {
       console.error(err);
       alert('Signup failed');

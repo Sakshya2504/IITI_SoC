@@ -1,21 +1,50 @@
 import React, { useState } from 'react';
 import './login.css';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import './login.css';
 
 function Login() {
+const navigate = useNavigate();
     
 const [logininfo,setlogininfo]=useState({
     email:"",
     password:""
 })
- const change = (e) => {
-    const copylogininfo={...logininfo};
-    const [className,value]=e.target;
-    copylogininfo[className]=value;
-    setlogininfo(copylogininfo);
+  const change = (e) => {
+    const { name, value } = e.target;
+    setlogininfo((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-}
+const handleLogin = async (e) => {
+  
+ 
+
+    e.preventDefault();
+    try {
+      const res = await fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(logininfo)
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message || 'Login successful!');
+        navigate('/'); // Or whatever route you want to go to
+      } else {
+        alert(data.message || 'Login failed');
+      }
+
+      setlogininfo({ email: "", password: "" }); // no name needed here
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong. Please try again.');
+    }
+};
  
   return (
     <div className="login">
@@ -26,16 +55,28 @@ const [logininfo,setlogininfo]=useState({
         </p>
        <form>
   <div className='loginform'>
-    <label for="InputEmail1">EMAIL ADRESS</label>
-    <input type="email" className="email" id="InputEmail1" onChange={change}/>
-    
+            <label htmlFor="InputEmail1">EMAIL ADDRESS</label>
+            <input
+              type="email"
+              className="email"
+              id="InputEmail1"
+              name="email"
+              value={logininfo.email}
+              onChange={change}
+            />
+
+            <label htmlFor="InputPassword">PASSWORD</label>
+            <input
+              type="password"
+              className="password"
+              id="InputPassword"
+              name="password"
+              value={logininfo.password}
+              onChange={change}
+            />
   
  
-    <label for="InputPassword">PASSWORD</label>
-    <input type="password" className="password" id="InputPassword"/>
-  
- 
-  <button type="submit" className="loginsubmitbutton" >login</button>
+  <button type="submit" className="loginsubmitbutton" onClick={handleLogin} >login</button>
   </div>
   <p>Doesnot have acount?</p>
 <Link to='/signup'>Signup</Link>
